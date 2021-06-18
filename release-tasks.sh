@@ -1,9 +1,9 @@
 echo "Running Release Tasks"
 
 echo "Running Migrations"
-python underwearshop/manage.py migrate
+python manage.py migrate
 
 echo "Creating a superuser"
-python underwearshop/manage.py createsuperuser --noinput
+python manage.py createsuperuser --noinput
 
 echo "Done"
