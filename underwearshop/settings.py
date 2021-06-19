@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 from os import getenv as env
 from os import path
+from dj_database_url import parse as parse_database
 
 
 BASE_DIR = path.dirname(path.dirname(path.abspath(__file__)))
@@ -97,6 +98,9 @@ DATABASES = {
     }
 }
 
+if (db_url := env('DATABASE_URL')):
+
+    DATABASES = {'default': parse_database(db_url)}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
