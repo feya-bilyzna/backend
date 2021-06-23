@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-20 20:48+0300\n"
+"POT-Creation-Date: 2021-06-23 20:15+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,114 +20,89 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: .\underwearshop\app.py:7
 msgid "Underwear Shop"
 msgstr "Магазин Белья"
 
-#: .\underwearshop\models.py:11 .\underwearshop\models.py:25
 msgid "Name"
 msgstr "Наименование"
 
-#: .\underwearshop\models.py:16
 msgid "Product variant"
 msgstr "Вариант товаров"
 
-#: .\underwearshop\models.py:17
 msgid "Product variants"
 msgstr "Варианты товаров"
 
-#: .\underwearshop\models.py:29
 msgid "Description"
 msgstr "Описание"
 
-#: .\underwearshop\models.py:34
 msgid "variants"
 msgstr "варианты"
 
-#: .\underwearshop\models.py:35 .\underwearshop\models.py:55
 msgid "variant"
 msgstr "вариант"
 
-#: .\underwearshop\models.py:40
 msgid "Product"
 msgstr "Товар"
 
-#: .\underwearshop\models.py:41
 msgid "Products"
 msgstr "Товары"
 
-#: .\underwearshop\models.py:49
 msgid "products"
 msgstr "товары"
 
-#: .\underwearshop\models.py:50 .\underwearshop\models.py:76
 msgid "product"
 msgstr "товар"
 
-#: .\underwearshop\models.py:59
 msgid "Remains amount"
 msgstr "Количество остатков"
 
-#: .\underwearshop\models.py:62
 msgid "Price"
 msgstr "Цена"
 
-#: .\underwearshop\models.py:67
 msgid "Product remains relation"
 msgstr "Соответствие остатков товара"
 
-#: .\underwearshop\models.py:68
 msgid "Product remains relations"
 msgstr "Соответствия остатков товара"
 
-#: .\underwearshop\models.py:79
+msgid "images"
+msgstr "картинки"
+
 msgid "Link to image"
 msgstr "Ссылка на изображение"
 
-#: .\underwearshop\models.py:84
 msgid "Product image"
 msgstr "Картинка товара"
 
-#: .\underwearshop\models.py:85
 msgid "Product images"
 msgstr "Картинки товара"
 
-#: .\underwearshop\models.py:94
 msgid "users"
 msgstr ""
 
-#: .\underwearshop\models.py:95
 msgid "user"
 msgstr ""
 
-#: .\underwearshop\models.py:100 .\underwearshop\models.py:120
 msgid "related product remains"
 msgstr "соответствующие остатки товара"
 
-#: .\underwearshop\models.py:105
 msgid "Order"
 msgstr "Заказ"
 
-#: .\underwearshop\models.py:106
 msgid "Orders"
 msgstr "Заказы"
 
-#: .\underwearshop\models.py:114
 msgid "orders"
 msgstr "заказы"
 
-#: .\underwearshop\models.py:115
 msgid "order"
 msgstr "заказ"
 
-#: .\underwearshop\models.py:124
 msgid "Product amount"
 msgstr "Количество товара"
 
-#: .\underwearshop\models.py:129
 msgid "Order position"
 msgstr "Позиция заказа"
 
-#: .\underwearshop\models.py:130
 msgid "Order positions"
 msgstr "Позиции заказа"
