@@ -74,6 +74,7 @@ class ProductImage(models.Model):
         Product,
         on_delete=models.CASCADE,
         verbose_name=_('product'),
+        related_name=_('images'),
     )
     url = models.URLField(
         verbose_name=_('Link to image'),
