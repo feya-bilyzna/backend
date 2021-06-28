@@ -5,7 +5,8 @@ from .models import (
     ProductRemains,
     ProductVariant,
     ProductImage,
-    OrderProduct
+    OrderProduct,
+    Category,
 )
 
 
@@ -57,4 +58,9 @@ class ProductImageAdmin(admin.ModelAdmin):
 
 @admin.register(OrderProduct)
 class OrderProductAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
     pass

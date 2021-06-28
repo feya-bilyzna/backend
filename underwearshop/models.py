@@ -3,6 +3,24 @@ from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 
 
+class Category(models.Model):
+
+    name = models.CharField(
+        max_length=128,
+        unique=True,
+        verbose_name=_('Name'),
+    )
+
+    def __str__(self):
+
+        return self.name
+
+    class Meta:
+
+        verbose_name = _('Product category')
+        verbose_name_plural = _('Product categories')
+
+
 class ProductVariant(models.Model):
 
     name = models.CharField(
@@ -10,6 +28,10 @@ class ProductVariant(models.Model):
         unique=True,
         verbose_name=_('Name'),
     )
+
+    def __str__(self):
+
+        return self.name
 
     class Meta:
 
@@ -34,6 +56,18 @@ class Product(models.Model):
         related_name=_('variants'),
         verbose_name=_('variant'),
     )
+    category = models.ForeignKey(
+        Category,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name=_('categories'),
+        verbose_name=_('category'),
+    )
+
+    def __str__(self):
+
+        return self.name
 
     class Meta:
 
@@ -62,6 +96,12 @@ class ProductRemains(models.Model):
         verbose_name=_('Price'),
     )
 
+    def __str__(self):
+
+        return _('Remains: %(product)s (%(variant)s)') % {
+            'product': self.product.name, 'variant': self.productvariant.name
+        }
+
     class Meta:
 
         verbose_name = _('Product remains relation')
@@ -79,6 +119,12 @@ class ProductImage(models.Model):
     url = models.URLField(
         verbose_name=_('Link to image'),
     )
+
+    def __str__(self):
+
+        return _('Image:  %(product)s') % {
+            'product': self.product.name,
+        }
 
     class Meta:
 
