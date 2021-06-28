@@ -72,6 +72,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+if DEBUG:
+    INSTALLED_APPS.append('debug_toolbar')
+    MIDDLEWARE = [
+        'debug_toolbar.middleware.DebugToolbarMiddleware', *MIDDLEWARE
+    ]
+
 ROOT_URLCONF = 'underwearshop.urls'
 
 TEMPLATES = [
@@ -145,7 +151,13 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = False
-CORS_ORIGIN_WHITELIST = (
+CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
-    'https://feya-bilyzna.github.io/',
-)
+]
+
+if not DEBUG:
+    CORS_ORIGIN_WHITELIST.append('https://feya-bilyzna.github.io/')
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
