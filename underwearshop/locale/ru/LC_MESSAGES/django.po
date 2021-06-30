@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-23 20:15+0300\n"
+"POT-Creation-Date: 2021-06-28 02:43+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,6 +26,12 @@ msgstr "Магазин Белья"
 msgid "Name"
 msgstr "Наименование"
 
+msgid "Product category"
+msgstr "Категория товара"
+
+msgid "Product categories"
+msgstr "Категории товаров"
+
 msgid "Product variant"
 msgstr "Вариант товаров"
 
@@ -40,6 +46,12 @@ msgstr "варианты"
 
 msgid "variant"
 msgstr "вариант"
+
+msgid "categories"
+msgstr "категории"
+
+msgid "category"
+msgstr "категория"
 
 msgid "Product"
 msgstr "Товар"
@@ -59,6 +71,9 @@ msgstr "Количество остатков"
 msgid "Price"
 msgstr "Цена"
 
+msgid "Remains: %(product)s (%(variant)s)"
+msgstr "Остатки: %(product)s (%(variant)s)"
+
 msgid "Product remains relation"
 msgstr "Соответствие остатков товара"
 
@@ -70,6 +85,9 @@ msgstr "картинки"
 
 msgid "Link to image"
 msgstr "Ссылка на изображение"
+
+msgid "Image:  %(product)s"
+msgstr "Изображение:  %(product)s"
 
 msgid "Product image"
 msgstr "Картинка товара"

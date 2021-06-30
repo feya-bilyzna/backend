@@ -33,11 +33,18 @@ class ProductImageType(DjangoObjectType):
 class Query(graphene.ObjectType):
 
     all_products = graphene.List(ProductType)
+    category_products = graphene.List(
+        ProductType, category_name=graphene.String(required=True)
+    )
     product_by_id = graphene.Field(ProductType, id=graphene.Int(required=True))
 
     def resolve_all_products(root, info):
 
         return Product.objects.all()
+
+    def resolve_category_products(root, info, category_name):
+
+        return Product.objects.filter(category__name=category_name)
 
     def resolve_product_by_id(root, info, id):
 
