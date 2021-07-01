@@ -40,16 +40,18 @@ class Query(graphene.ObjectType):
 
     def resolve_all_products(root, info):
 
-        return Product.objects.all()
+        return Product.objects.prefetch_related('images').all()
 
     def resolve_category_products(root, info, category_name):
 
-        return Product.objects.filter(category__name=category_name)
+        return Product.objects.prefetch_related('images').filter(
+            category__name=category_name
+        )
 
     def resolve_product_by_id(root, info, id):
 
         try:
-            return Product.objects.get(id=id)
+            return Product.objects.prefetch_related('images').get(id=id)
 
         except Product.DoesNotExist:
             return None
