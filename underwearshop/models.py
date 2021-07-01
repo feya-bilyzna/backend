@@ -53,7 +53,7 @@ class Product(models.Model):
     variants = models.ManyToManyField(
         ProductVariant,
         through='ProductRemains',
-        related_name=_('variants'),
+        related_name='products',
         verbose_name=_('variant'),
     )
     category = models.ForeignKey(
@@ -61,7 +61,7 @@ class Product(models.Model):
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name=_('categories'),
+        related_name='products',
         verbose_name=_('category'),
     )
 
@@ -80,7 +80,7 @@ class ProductRemains(models.Model):
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
-        related_name=_('products'),
+        related_name='remains',
         verbose_name=_('product'),
     )
     productvariant = models.ForeignKey(
@@ -114,7 +114,7 @@ class ProductImage(models.Model):
         Product,
         on_delete=models.CASCADE,
         verbose_name=_('product'),
-        related_name=_('images'),
+        related_name='images',
     )
     url = models.URLField(
         verbose_name=_('Link to image'),
@@ -138,7 +138,7 @@ class Order(models.Model):
         User,
         null=True,
         on_delete=models.SET_NULL,
-        related_name=_('users'),
+        related_name='orders',
         verbose_name=_('user'),
     )
     positions = models.ManyToManyField(
@@ -158,7 +158,7 @@ class OrderProduct(models.Model):
     order = models.ForeignKey(
         Order,
         on_delete=models.CASCADE,
-        related_name=_('orders'),
+        related_name='orderproducts',
         verbose_name=_('order'),
     )
     productremains = models.ForeignKey(
