@@ -156,7 +156,7 @@ CORS_ORIGIN_WHITELIST = [
 ]
 
 if not DEBUG:
-    CORS_ORIGIN_WHITELIST.append('https://feya-bilyzna.github.io/')
+    CORS_ORIGIN_WHITELIST.append('https://feya-bilyzna.github.io')
 
 INTERNAL_IPS = [
     '127.0.0.1',
