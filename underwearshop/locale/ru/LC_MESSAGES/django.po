@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-28 02:43+0300\n"
+"POT-Creation-Date: 2021-07-01 13:31+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,14 +41,8 @@ msgstr "Варианты товаров"
 msgid "Description"
 msgstr "Описание"
 
-msgid "variants"
-msgstr "варианты"
-
 msgid "variant"
 msgstr "вариант"
-
-msgid "categories"
-msgstr "категории"
 
 msgid "category"
 msgstr "категория"
@@ -59,9 +53,6 @@ msgstr "Товар"
 msgid "Products"
 msgstr "Товары"
 
-msgid "products"
-msgstr "товары"
-
 msgid "product"
 msgstr "товар"
 
@@ -71,6 +62,7 @@ msgstr "Количество остатков"
 msgid "Price"
 msgstr "Цена"
 
+#, python-format
 msgid "Remains: %(product)s (%(variant)s)"
 msgstr "Остатки: %(product)s (%(variant)s)"
 
@@ -80,12 +72,10 @@ msgstr "Соответствие остатков товара"
 msgid "Product remains relations"
 msgstr "Соответствия остатков товара"
 
-msgid "images"
-msgstr "картинки"
-
 msgid "Link to image"
 msgstr "Ссылка на изображение"
 
+#, python-format
 msgid "Image:  %(product)s"
 msgstr "Изображение:  %(product)s"
 
@@ -94,9 +84,6 @@ msgstr "Картинка товара"
 
 msgid "Product images"
 msgstr "Картинки товара"
-
-msgid "users"
-msgstr ""
 
 msgid "user"
 msgstr ""
@@ -109,9 +96,6 @@ msgstr "Заказ"
 
 msgid "Orders"
 msgstr "Заказы"
-
-msgid "orders"
-msgstr "заказы"
 
 msgid "order"
 msgstr "заказ"
