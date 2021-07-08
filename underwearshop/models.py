@@ -118,6 +118,7 @@ class ProductImage(models.Model):
     )
     url = models.URLField(
         verbose_name=_('Link to image'),
+        max_length=300,
     )
 
     def __str__(self):
