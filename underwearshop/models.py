@@ -106,6 +106,7 @@ class ProductRemains(models.Model):
 
         verbose_name = _('Product remains relation')
         verbose_name_plural = _('Product remains relations')
+        unique_together = ['product', 'productvariant']
 
 
 class ProductImage(models.Model):
