@@ -2,12 +2,19 @@
 import graphene
 from graphene_django import DjangoObjectType
 
-from underwearshop.models import Product, ProductImage, ProductRemains
+from underwearshop.models import (
+    Product,
+    ProductImage,
+    ProductRemains,
+    Category,
+)
+from django.utils.translation import gettext_lazy as _
 
 PRODUCT_PREFETCHES = (
     'images',
     'remains',
     'remains__productvariant',
+    'categories',
 )
 
 
@@ -23,6 +30,20 @@ class ProductType(DjangoObjectType):
             "images",
             "remains",
         )
+    
+    brand_name = graphene.String()
+    categories = graphene.List(graphene.String)
+
+    @staticmethod
+    def resolve_brand_name(root, info, **kwargs):
+        for category in root.categories.all():
+            if category.parent_prefix == _('Brands'):
+                return category.name
+        return None
+
+    @staticmethod
+    def resolve_categories(root, info, **kwargs):
+        return root.categories.all()
 
 
 class ProductImageType(DjangoObjectType):
@@ -73,14 +94,19 @@ class Query(graphene.ObjectType):
 
     def resolve_category_products(root, info, category_name):
 
-        return Product.objects.prefetch_related(*PRODUCT_PREFETCHES).filter(
-            category__name=category_name
-        )
+        try:
+            return Category.objects.get(
+                name=category_name
+            ).products.prefetch_related(*PRODUCT_PREFETCHES).all()
+        except Category.DoesNotExist:
+            return []
 
     def resolve_product_by_id(root, info, id):
 
         try:
-            return Product.objects.prefetch_related(*PRODUCT_PREFETCHES).get(id=id)
+            return Product.objects.prefetch_related(
+                *PRODUCT_PREFETCHES
+            ).get(id=id)
 
         except Product.DoesNotExist:
             return None

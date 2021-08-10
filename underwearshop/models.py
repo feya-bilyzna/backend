@@ -62,13 +62,10 @@ class Product(models.Model):
         related_name='products',
         verbose_name=_('variant'),
     )
-    category = models.ForeignKey(
+    categories = models.ManyToManyField(
         Category,
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
         related_name='products',
-        verbose_name=_('category'),
+        verbose_name=_('categories'),
     )
 
     def __str__(self):
