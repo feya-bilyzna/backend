@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 
 
@@ -9,6 +10,11 @@ class Category(models.Model):
         max_length=128,
         unique=True,
         verbose_name=_('Name'),
+    )
+    parent_prefix = models.CharField(
+        max_length=128,
+        verbose_name=_('Parent prefix'),
+        default=gettext('Uncategorized')
     )
 
     def __str__(self):
