@@ -8,6 +8,9 @@ from underwearshop.models import (
     ProductRemains,
     Category,
 )
+
+from django.db.models import When, Case, Value, Sum
+
 from django.utils.translation import gettext_lazy as _
 
 PRODUCT_PREFETCHES = (
@@ -80,24 +83,49 @@ class ProductRemainsType(DjangoObjectType):
         return root.productvariant.name
 
 
+def slice_products(qs, page):
+
+    return qs.annotate(
+        product_remains=Sum('remains__remains')
+    ).annotate(
+        in_stock=Case(
+            When(product_remains__gt=0, then=Value(True)),
+            default=Value(False)
+        )
+    ).order_by('-in_stock', '-id')[(page-1)*12:page*12]
+
+
 class Query(graphene.ObjectType):
 
-    all_products = graphene.List(ProductType)
-    category_products = graphene.List(
-        ProductType, category_name=graphene.String(required=True)
+    all_products = graphene.List(
+        ProductType,
+        page=graphene.Int(),
     )
-    product_by_id = graphene.Field(ProductType, id=graphene.Int(required=True))
+    category_products = graphene.List(
+        ProductType,
+        category_name=graphene.String(required=True),
+        page=graphene.Int(),
+    )
+    product_by_id = graphene.Field(
+        ProductType,
+        id=graphene.Int(required=True),
+    )
 
-    def resolve_all_products(root, info):
+    def resolve_all_products(root, info, page=1):
 
-        return Product.objects.prefetch_related(*PRODUCT_PREFETCHES).all()
+        return slice_products(
+            Product.objects.prefetch_related(*PRODUCT_PREFETCHES).all(), page,
+        )
 
-    def resolve_category_products(root, info, category_name):
+    def resolve_category_products(root, info, category_name, page=1):
 
         try:
-            return Category.objects.get(
-                name=category_name
-            ).products.prefetch_related(*PRODUCT_PREFETCHES).all()
+            return slice_products(
+                Category.objects.get(
+                    name=category_name
+                ).products.prefetch_related(*PRODUCT_PREFETCHES).all(),
+                page,
+            )
         except Category.DoesNotExist:
             return []
 
