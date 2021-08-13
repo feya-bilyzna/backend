@@ -1,6 +1,7 @@
 # cookbook/schema.py
 import graphene
 from graphene_django import DjangoObjectType
+from graphene.types.generic import GenericScalar
 
 from underwearshop.models import (
     Product,
@@ -70,6 +71,7 @@ class ProductRemainsType(DjangoObjectType):
 
     variant_id = graphene.Int()
     variant_name = graphene.String()
+    variant_style = GenericScalar()
 
     @staticmethod
     def resolve_variant_id(root, info, **kwargs):
@@ -78,6 +80,10 @@ class ProductRemainsType(DjangoObjectType):
     @staticmethod
     def resolve_variant_name(root, info, **kwargs):
         return root.productvariant.name
+
+    @staticmethod
+    def resolve_variant_style(root, info, **kwargs):
+        return root.productvariant.style
 
 
 class Query(graphene.ObjectType):
