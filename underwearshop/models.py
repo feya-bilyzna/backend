@@ -34,6 +34,10 @@ class ProductVariant(models.Model):
         unique=True,
         verbose_name=_('Name'),
     )
+    style = models.JSONField(
+        default=dict,
+        verbose_name=_('Style'),
+    )
 
     def __str__(self):
 
