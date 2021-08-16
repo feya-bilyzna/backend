@@ -10,6 +10,7 @@ from .models import (
 )
 from django.utils.translation import gettext_lazy as _
 from django import forms
+from django.db.models import Sum, functions
 
 
 class ProductAdminForm(forms.ModelForm):
@@ -59,7 +60,22 @@ class ProductAdmin(admin.ModelAdmin):
         ProductVariantInline,
         ProductImageInline,
     ]
+    search_fields = ('name', 'id')
     autocomplete_fields = ('categories',)
+    list_display = ('name', 'get_total_remains',)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.annotate(
+            total_remains=functions.Coalesce(Sum('remains__remains'), 0)
+        )
+
+    def get_total_remains(self, obj):
+
+        return obj.total_remains
+
+    get_total_remains.admin_order_field  = 'total_remains'
+    get_total_remains.short_description = _('Total remains')
 
 
 @admin.register(ProductRemains)
