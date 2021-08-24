@@ -40,6 +40,9 @@ class OrderPositionsInline(admin.TabularInline):
 
 class ProductVariantInline(admin.TabularInline):
     model = ProductRemains
+    autocomplete_fields = ('productvariant',)
+    min_num = 1
+    extra = 0
 
 
 class ProductImageInline(admin.StackedInline):
@@ -83,6 +86,7 @@ class ProductRemainsAdmin(admin.ModelAdmin):
     inlines = [
         OrderPositionsInline,
     ]
+    autocomplete_fields = ('product', 'productvariant')
 
 
 @admin.register(ProductVariant)
@@ -90,6 +94,7 @@ class ProductVariantAdmin(admin.ModelAdmin):
     inlines = [
         ProductVariantInline,
     ]
+    search_fields = ('name', 'id')
 
 
 @admin.register(ProductImage)
