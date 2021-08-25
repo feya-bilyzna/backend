@@ -96,7 +96,7 @@ class ProductRemains(models.Model):
         verbose_name=_('variant'),
     )
     remains = models.PositiveSmallIntegerField(
-        default=0,
+        default=1,
         verbose_name=_('Remains amount'),
     )
     price = models.PositiveIntegerField(
