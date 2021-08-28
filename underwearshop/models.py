@@ -51,6 +51,13 @@ class ProductVariant(models.Model):
 
 class Product(models.Model):
 
+    vendor_code = models.CharField(
+        max_length=128,
+        blank=True,
+        null=True,
+        verbose_name=_('Vendor code'),
+        default=gettext('Test-product'),
+    )
     name = models.CharField(
         max_length=128,
         unique=True,

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-24 22:58+0300\n"
+"POT-Creation-Date: 2021-08-28 18:52+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -58,6 +58,12 @@ msgstr "Вариант товаров"
 
 msgid "Product variants"
 msgstr "Варианты товаров"
+
+msgid "Vendor code"
+msgstr "Артикул"
+
+msgid "Test-product"
+msgstr "Тест-товар"
 
 msgid "Description"
 msgstr "Описание"

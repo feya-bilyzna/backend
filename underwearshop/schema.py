@@ -30,6 +30,7 @@ class ProductType(DjangoObjectType):
         fields = (
             "id",
             "name",
+            "vendor_code",
             "description",
             "images",
             "remains",
