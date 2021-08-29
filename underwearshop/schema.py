@@ -116,6 +116,11 @@ class Query(graphene.ObjectType):
         ProductType,
         id=graphene.Int(required=True),
     )
+    products_by_ids = graphene.List(
+        ProductType,
+        ids=graphene.List(graphene.Int, required=True),
+        page=graphene.Int(),
+    )
 
     def resolve_all_products(root, info, page=1):
 
@@ -144,6 +149,14 @@ class Query(graphene.ObjectType):
 
         except Product.DoesNotExist:
             return None
+
+    def resolve_products_by_ids(root, info, ids, page=1):
+
+        return slice_products(
+            Product.objects.prefetch_related(
+                *PRODUCT_PREFETCHES
+            ).filter(id__in=ids), page,
+        )
 
 
 schema = graphene.Schema(
