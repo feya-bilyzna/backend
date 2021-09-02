@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 
@@ -148,20 +147,48 @@ class ProductImage(models.Model):
         verbose_name_plural = _('Product images')
 
 
+class Customer(models.Model):
+
+    contact_info = models.CharField(
+        max_length=128,
+        unique=True,
+        verbose_name=_('Contact info'),
+    )
+
+    def __str__(self):
+
+        return self.contact_info
+
+    class Meta:
+
+        verbose_name = _('Customer')
+        verbose_name_plural = _('Customers')
+
+
 class Order(models.Model):
 
-    user = models.ForeignKey(
-        User,
+    customer = models.ForeignKey(
+        Customer,
         null=True,
         on_delete=models.SET_NULL,
         related_name='orders',
-        verbose_name=_('user'),
+        verbose_name=_('customer'),
     )
     positions = models.ManyToManyField(
         ProductRemains,
         through='OrderProduct',
         verbose_name=_('related product remains'),
     )
+    processed = models.BooleanField(
+        verbose_name=_('Order processed'),
+        default=False,
+    )
+
+    def __str__(self):
+
+        return _('Order #%(number)s') % {
+            'number': self.id,
+        }
 
     class Meta:
 
@@ -179,7 +206,8 @@ class OrderProduct(models.Model):
     )
     productremains = models.ForeignKey(
         ProductRemains,
-        on_delete=models.CASCADE,
+        null=True,
+        on_delete=models.SET_NULL,
         verbose_name=_('related product remains'),
     )
     amount = models.PositiveSmallIntegerField(

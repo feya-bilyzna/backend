@@ -7,10 +7,13 @@ from .models import (
     ProductImage,
     OrderProduct,
     Category,
+    Customer,
 )
 from django.utils.translation import gettext_lazy as _
+from django.utils.html import format_html
 from django import forms
-from django.db.models import Sum, functions
+from django.urls import reverse
+from django.db.models import Sum, functions, F
 
 
 class ProductAdminForm(forms.ModelForm):
@@ -36,9 +39,23 @@ class ProductAdminForm(forms.ModelForm):
 
 class OrderPositionsInline(admin.TabularInline):
     model = OrderProduct
+    autocomplete_fields = ('productremains',)
+    readonly_fields = ('get_product_price',)
+    min_num = 1
+    extra = 0
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.select_related('productremains')
+
+    def get_product_price(self, obj):
+
+        return obj.productremains.price
+
+    get_product_price.short_description = _('Price')
 
 
-class ProductVariantInline(admin.TabularInline):
+class ProductRemainsInline(admin.TabularInline):
     model = ProductRemains
     autocomplete_fields = ('productvariant',)
     min_num = 1
@@ -54,13 +71,44 @@ class OrderAdmin(admin.ModelAdmin):
     inlines = [
         OrderPositionsInline,
     ]
+    autocomplete_fields = ('customer',)
+    search_fields = ('customer__contact_info', 'id')
+    list_display = ('id', 'get_contact_info', 'processed')
+    readonly_fields = ('get_total_price',)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.select_related('customer')
+
+    def get_contact_info(self, obj):
+
+        if obj.customer is None:
+            return None
+
+        return format_html(
+            "<a href='{url}'>{text}</a>",
+            url=reverse(
+                'admin:underwearshop_customer_change', args=(obj.customer.id,)
+            ),
+            text=obj.customer.contact_info,
+        )
+
+    get_contact_info.short_description = _('Customer')
+
+    def get_total_price(self, obj):
+
+        return obj.orderproducts.aggregate(
+            total=Sum(F('amount') * F('productremains__price'))
+        )['total']
+
+    get_total_price.short_description = _('Total price')
 
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     form = ProductAdminForm
     inlines = [
-        ProductVariantInline,
+        ProductRemainsInline,
         ProductImageInline,
     ]
     search_fields = ('name', 'id')
@@ -87,12 +135,13 @@ class ProductRemainsAdmin(admin.ModelAdmin):
         OrderPositionsInline,
     ]
     autocomplete_fields = ('product', 'productvariant')
+    search_fields = ('product__name', 'productvariant__name')
 
 
 @admin.register(ProductVariant)
 class ProductVariantAdmin(admin.ModelAdmin):
     inlines = [
-        ProductVariantInline,
+        ProductRemainsInline,
     ]
     search_fields = ('name', 'id')
 
@@ -111,3 +160,17 @@ class OrderProductAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'parent_prefix')
     search_fields = ('name',)
+
+
+class OrderInline(admin.TabularInline):
+    model = Order
+    extra = 0
+    max_num = 0
+    show_change_link = True
+
+
+@admin.register(Customer)
+class CustomerAdmin(admin.ModelAdmin):
+    list_display = ('contact_info',)
+    search_fields = ('contact_info',)
+    inlines = (OrderInline,)

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-28 18:52+0300\n"
+"POT-Creation-Date: 2021-09-02 08:32+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,6 +25,15 @@ msgstr "Бренды"
 
 msgid "Only one category with parent prefix \"Brands\" is allowed."
 msgstr "Разрешена только одна категория с родительским префиксом \"Бренды\""
+
+msgid "Price"
+msgstr "Цена"
+
+msgid "Customer"
+msgstr "Покупатель"
+
+msgid "Total price"
+msgstr "Итоговая цена"
 
 msgid "Total remains"
 msgstr "Всего остатков"
@@ -86,9 +95,6 @@ msgstr "товар"
 msgid "Remains amount"
 msgstr "Количество остатков"
 
-msgid "Price"
-msgstr "Цена"
-
 #, python-format
 msgid "Remains: %(product)s (%(variant)s)"
 msgstr "Остатки: %(product)s (%(variant)s)"
@@ -112,11 +118,24 @@ msgstr "Картинка товара"
 msgid "Product images"
 msgstr "Картинки товара"
 
-msgid "user"
-msgstr ""
+msgid "Contact info"
+msgstr "Контактная информация"
+
+msgid "Customers"
+msgstr "Покупатели"
+
+msgid "customer"
+msgstr "покупатель"
 
 msgid "related product remains"
 msgstr "соответствующие остатки товара"
+
+msgid "Order processed"
+msgstr "Заказ обработан"
+
+#, python-format
+msgid "Order #%(number)s"
+msgstr "Заказ #%(number)s"
 
 msgid "Order"
 msgstr "Заказ"
