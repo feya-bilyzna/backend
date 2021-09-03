@@ -24,6 +24,11 @@ PRODUCT_PREFETCHES = (
     'remains__productvariant',
     'categories',
 )
+ORDERPRODUCT_PRODUCT_RELATION = 'productremains__product'
+ORDERPRODUCT_PREFETCHES = tuple(
+    f'{ORDERPRODUCT_PRODUCT_RELATION}__{prefetch}'
+    for prefetch in PRODUCT_PREFETCHES
+)
 
 
 class ProductType(DjangoObjectType):
@@ -53,6 +58,49 @@ class ProductType(DjangoObjectType):
     @staticmethod
     def resolve_categories(root, info, **kwargs):
         return root.categories.all()
+
+
+class OrderProductType(DjangoObjectType):
+
+    class Meta:
+
+        model = OrderProduct
+        fields = (
+            'id',
+            'amount',
+            'productremains',
+        )
+
+    product = graphene.Field(ProductType)
+
+    @staticmethod
+    def resolve_product(root, info, **kwargs):
+
+        return root.productremains.product
+
+
+class OrderType(DjangoObjectType):
+
+    class Meta:
+
+        model = Order
+        fields = (
+            "id",
+            "processed"
+        )
+    
+    positions = graphene.List(OrderProductType)
+
+    @staticmethod
+    def resolve_positions(root, info, **kwargs):
+
+        return OrderProduct.objects.select_related(
+            'productremains',
+            ORDERPRODUCT_PRODUCT_RELATION,
+        ).prefetch_related(
+            'productremains__productvariant',
+            *ORDERPRODUCT_PREFETCHES
+        ).filter(order=root)
 
 
 class ProductImageType(DjangoObjectType):
@@ -157,7 +205,7 @@ class MakeOrder(graphene.Mutation):
             ) for order_item in orders_list
             if valid_remains.get(
                 order_item['remains_id'], 0
-            ) > order_item['amount']
+            ) >= order_item['amount']
         ]
 
         if len(positions) != len(orders_list):
@@ -200,8 +248,8 @@ class Query(graphene.ObjectType):
         ProductType,
         ids=graphene.List(graphene.Int, required=True),
     )
-    products_by_customer = graphene.List(
-        ProductType,
+    order_by_contactinfo = graphene.Field(
+        OrderType,
         contact_info=graphene.String(),
     )
 
@@ -238,6 +286,12 @@ class Query(graphene.ObjectType):
         return Product.objects.prefetch_related(
             *PRODUCT_PREFETCHES
         ).filter(id__in=ids)
+
+    def resolve_order_by_contactinfo(root, info, contact_info):
+
+        return Order.objects.filter(
+            customer__contact_info=contact_info, processed=False
+        ).order_by('id').first()
 
 
 schema = graphene.Schema(
