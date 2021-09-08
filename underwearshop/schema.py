@@ -73,6 +73,7 @@ class ProductRemainsType(DjangoObjectType):
 
         model = ProductRemains
         fields = (
+            "id",
             "remains",
             "price",
         )
