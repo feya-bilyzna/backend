@@ -131,9 +131,6 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(ProductRemains)
 class ProductRemainsAdmin(admin.ModelAdmin):
-    inlines = [
-        OrderPositionsInline,
-    ]
     autocomplete_fields = ('product', 'productvariant')
     search_fields = ('product__name', 'productvariant__name')
 
@@ -153,7 +150,25 @@ class ProductImageAdmin(admin.ModelAdmin):
 
 @admin.register(OrderProduct)
 class OrderProductAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('id', 'get_order')
+    autocomplete_fields = ('order', 'productremains',)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.select_related('order')
+
+    def get_order(self, obj):
+
+        return format_html(
+            "<a href='{url}'>{text}</a>",
+            url=reverse(
+                'admin:underwearshop_order_change', args=(obj.order.id,)
+            ),
+            text=obj.order.id,
+        )
+
+    get_order.short_description = _('Order')
+    get_order.admin_order_field  = 'order__id'
 
 
 @admin.register(Category)
