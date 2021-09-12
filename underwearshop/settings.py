@@ -40,8 +40,11 @@ SECRET_KEY = env(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DJANGO_DEBUG') == 'true'
 
+ENV_ALLOWED_HOST = env(
+    'DJANGO_ALLOWED_HOST', default='127.0.0.1'
+)
 ALLOWED_HOSTS = [
-    env('DJANGO_ALLOWED_HOST', default='127.0.0.1')
+    ENV_ALLOWED_HOST,
 ]
 
 
@@ -155,8 +158,8 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
 ]
 
-if not DEBUG:
-    CORS_ORIGIN_WHITELIST.append('https://feya-bilyzna.github.io')
+if not DEBUG and ENV_ALLOWED_HOST != '127.0.0.1':
+    CORS_ORIGIN_WHITELIST.append(f'https://{ENV_ALLOWED_HOST}')
 
 INTERNAL_IPS = [
     '127.0.0.1',
