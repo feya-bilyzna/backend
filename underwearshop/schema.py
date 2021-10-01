@@ -14,7 +14,7 @@ from underwearshop.models import (
     OrderProduct,
 )
 
-from django.db.models import When, Case, Value, Sum
+from django.db.models import When, Case, Value, Sum, Min
 
 from django.utils.translation import gettext_lazy as _
 
@@ -95,7 +95,7 @@ class ProductRemainsType(DjangoObjectType):
         return root.productvariant.style
 
 
-def slice_products(qs, page):
+def slice_products(qs, page, order_by=()):
 
     return qs.annotate(
         product_remains=Sum('remains__remains')
@@ -103,8 +103,11 @@ def slice_products(qs, page):
         in_stock=Case(
             When(product_remains__gt=0, then=Value(True)),
             default=Value(False)
-        )
-    ).order_by('-in_stock', '-id')[(page-1)*12:page*12]
+        ),
+        price=Min('remains__price'),
+    ).order_by(
+        *order_by, '-in_stock', '-id',
+    )[(page-1)*12:page*12]
 
 
 class OrderItem(graphene.InputObjectType):
@@ -182,6 +185,12 @@ class Mutation(graphene.ObjectType):
     make_order = MakeOrder.Field()
 
 
+class ProductOrderBy(graphene.Enum):
+
+    CHEAPEST = 1
+    EXPENSIVE = 2
+
+
 class Query(graphene.ObjectType):
 
     all_products = graphene.List(
@@ -191,6 +200,8 @@ class Query(graphene.ObjectType):
     category_products = graphene.List(
         ProductType,
         category_name=graphene.String(required=True),
+        variant_styles=GenericScalar(),
+        order_by=ProductOrderBy(),
         page=graphene.Int(),
     )
     product_by_id = graphene.Field(
@@ -212,17 +223,30 @@ class Query(graphene.ObjectType):
             Product.objects.prefetch_related(*PRODUCT_PREFETCHES).all(), page,
         )
 
-    def resolve_category_products(root, info, category_name, page=1):
+    def resolve_category_products(
+        root, info, category_name, variant_styles=None, order_by=None, page=1,
+    ):
 
         try:
-            return slice_products(
-                Category.objects.get(
-                    name=category_name
-                ).products.prefetch_related(*PRODUCT_PREFETCHES).all(),
-                page,
-            )
+            products = Category.objects.get(
+                name=category_name
+            ).products.prefetch_related(*PRODUCT_PREFETCHES).all()
         except Category.DoesNotExist:
             return []
+        
+        if variant_styles:
+            products = products.filter(
+                id__in=ProductRemains.objects.filter(**{
+                    f'productvariant__style__{style}': value
+                    for style, value in variant_styles.items()
+                }).distinct().values_list('product_id', flat=True)
+            )
+
+        return slice_products(
+            products, page, [
+                'price' if order_by == ProductOrderBy.CHEAPEST else '-price'
+            ] if order_by else ()
+        )
 
     def resolve_product_by_id(root, info, id):
 
