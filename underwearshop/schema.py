@@ -199,7 +199,7 @@ class Query(graphene.ObjectType):
     )
     category_products = graphene.List(
         ProductType,
-        category_name=graphene.String(required=True),
+        category_name=graphene.List(graphene.String, required=True),
         variant_styles=GenericScalar(),
         order_by=ProductOrderBy(),
         page=graphene.Int(),
@@ -227,13 +227,11 @@ class Query(graphene.ObjectType):
         root, info, category_name, variant_styles=None, order_by=None, page=1,
     ):
 
-        try:
-            products = Category.objects.get(
-                name=category_name
-            ).products.prefetch_related(*PRODUCT_PREFETCHES).all()
-        except Category.DoesNotExist:
-            return []
-        
+        products = Product.objects.prefetch_related(*PRODUCT_PREFETCHES)
+
+        for category in category_name:
+            products = products.filter(categories__name=category)
+
         if variant_styles:
             products = products.filter(
                 id__in=ProductRemains.objects.filter(**{
