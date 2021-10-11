@@ -137,9 +137,6 @@ class ProductRemainsAdmin(admin.ModelAdmin):
 
 @admin.register(ProductVariant)
 class ProductVariantAdmin(admin.ModelAdmin):
-    inlines = [
-        ProductRemainsInline,
-    ]
     search_fields = ('name', 'id')
 
 
