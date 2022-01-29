@@ -8,13 +8,12 @@ from underwearshop.models import (
     Product,
     ProductImage,
     ProductRemains,
-    Category,
     Customer,
     Order,
     OrderProduct,
 )
 
-from django.db.models import When, Case, Value, Sum, Min
+from django.db.models import When, Case, Value, Sum, Min, Q
 
 from django.utils.translation import gettext_lazy as _
 
@@ -44,7 +43,7 @@ class ProductType(DjangoObjectType):
             "images",
             "remains",
         )
-    
+
     brand_name = graphene.String()
     categories = graphene.List(graphene.String)
 
@@ -88,7 +87,7 @@ class OrderType(DjangoObjectType):
             "id",
             "processed"
         )
-    
+
     positions = graphene.List(OrderProductType)
 
     @staticmethod
@@ -197,7 +196,7 @@ class MakeOrder(graphene.Mutation):
         if order is None:
             order = Order(customer=customer, processed=False)
             created = True
-        
+
         valid_remains = dict(ProductRemains.objects.filter(
             id__in=orders
         ).values_list('id', 'remains'))
@@ -281,11 +280,20 @@ class Query(graphene.ObjectType):
             products = products.filter(categories__name=category)
 
         if variant_styles:
+            color = variant_styles.pop("color", None)
+            appropriate_remains = ProductRemains.objects.filter(**{
+                f'productvariant__style__{style}': value
+                for style, value in variant_styles.items()
+            })
+            if color is not None:
+                appropriate_remains = appropriate_remains.filter(
+                    Q(productvariant__style__color=color) |
+                    Q(productvariant__style__color__startswith=f'{color} ')
+                )
             products = products.filter(
-                id__in=ProductRemains.objects.filter(**{
-                    f'productvariant__style__{style}': value
-                    for style, value in variant_styles.items()
-                }).distinct().values_list('product_id', flat=True)
+                id__in=appropriate_remains.distinct().values_list(
+                    'product_id', flat=True
+                )
             )
 
         return slice_products(
