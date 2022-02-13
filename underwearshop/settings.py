@@ -49,6 +49,7 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
     'underwearshop.apps.UnderwearShopConfig',
+    'django_admin_logs',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -161,3 +162,5 @@ if (ENV_FRONTEND_URL := env('FRONTEND_URL')):
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
+
+DJANGO_ADMIN_LOGS_ENABLED = False
