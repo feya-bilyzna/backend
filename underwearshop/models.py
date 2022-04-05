@@ -77,6 +77,10 @@ class Product(models.Model):
         related_name='products',
         verbose_name=_('categories'),
     )
+    image_links = models.JSONField(
+        default=list,
+        verbose_name=_('Image links'),
+    )
 
     def __str__(self):
 
@@ -120,31 +124,6 @@ class ProductRemains(models.Model):
         verbose_name = _('Product remains relation')
         verbose_name_plural = _('Product remains relations')
         unique_together = ['product', 'productvariant']
-
-
-class ProductImage(models.Model):
-
-    product = models.ForeignKey(
-        Product,
-        on_delete=models.CASCADE,
-        verbose_name=_('product'),
-        related_name='images',
-    )
-    url = models.URLField(
-        verbose_name=_('Link to image'),
-        max_length=300,
-    )
-
-    def __str__(self):
-
-        return _('Image:  %(product)s') % {
-            'product': self.product.name,
-        }
-
-    class Meta:
-
-        verbose_name = _('Product image')
-        verbose_name_plural = _('Product images')
 
 
 class Customer(models.Model):

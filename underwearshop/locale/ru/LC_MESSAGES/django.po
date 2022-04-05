@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-02 08:32+0300\n"
+"POT-Creation-Date: 2022-04-05 21:00+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,6 +37,9 @@ msgstr "Итоговая цена"
 
 msgid "Total remains"
 msgstr "Всего остатков"
+
+msgid "Order"
+msgstr "Заказ"
 
 msgid "Underwear Shop"
 msgstr "Магазин Белья"
@@ -83,6 +86,9 @@ msgstr "вариант"
 msgid "categories"
 msgstr "категории"
 
+msgid "Image links"
+msgstr "Ссылки на изображения"
+
 msgid "Product"
 msgstr "Товар"
 
@@ -105,19 +111,6 @@ msgstr "Соответствие остатков товара"
 msgid "Product remains relations"
 msgstr "Соответствия остатков товара"
 
-msgid "Link to image"
-msgstr "Ссылка на изображение"
-
-#, python-format
-msgid "Image:  %(product)s"
-msgstr "Изображение:  %(product)s"
-
-msgid "Product image"
-msgstr "Картинка товара"
-
-msgid "Product images"
-msgstr "Картинки товара"
-
 msgid "Contact info"
 msgstr "Контактная информация"
 
@@ -136,9 +129,6 @@ msgstr "Заказ обработан"
 #, python-format
 msgid "Order #%(number)s"
 msgstr "Заказ #%(number)s"
-
-msgid "Order"
-msgstr "Заказ"
 
 msgid "Orders"
 msgstr "Заказы"

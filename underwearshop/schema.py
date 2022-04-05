@@ -6,7 +6,6 @@ from graphql import GraphQLError
 
 from underwearshop.models import (
     Product,
-    ProductImage,
     ProductRemains,
     Customer,
     Order,
@@ -18,7 +17,6 @@ from django.db.models import When, Case, Value, Sum, Min, Q
 from django.utils.translation import gettext_lazy as _
 
 PRODUCT_PREFETCHES = (
-    'images',
     'remains',
     'remains__productvariant',
     'categories',
@@ -40,12 +38,12 @@ class ProductType(DjangoObjectType):
             "name",
             "vendor_code",
             "description",
-            "images",
             "remains",
         )
 
     brand_name = graphene.String()
     categories = graphene.List(graphene.String)
+    images = GenericScalar()
 
     @staticmethod
     def resolve_brand_name(root, info, **kwargs):
@@ -57,6 +55,10 @@ class ProductType(DjangoObjectType):
     @staticmethod
     def resolve_categories(root, info, **kwargs):
         return root.categories.all()
+
+    @staticmethod
+    def resolve_images(root, info, **kwargs):
+        return root.image_links
 
 
 class OrderProductType(DjangoObjectType):
@@ -100,18 +102,6 @@ class OrderType(DjangoObjectType):
             'productremains__productvariant',
             *ORDERPRODUCT_PREFETCHES
         ).filter(order=root)
-
-
-class ProductImageType(DjangoObjectType):
-
-    class Meta:
-
-        model = ProductImage
-        fields = (
-            "id",
-            "product",
-            "url",
-        )
 
 
 class ProductRemainsType(DjangoObjectType):

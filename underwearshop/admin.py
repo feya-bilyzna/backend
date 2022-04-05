@@ -4,7 +4,6 @@ from .models import (
     Product,
     ProductRemains,
     ProductVariant,
-    ProductImage,
     OrderProduct,
     Category,
     Customer,
@@ -62,10 +61,6 @@ class ProductRemainsInline(admin.TabularInline):
     extra = 0
 
 
-class ProductImageInline(admin.StackedInline):
-    model = ProductImage
-
-
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     inlines = [
@@ -109,7 +104,6 @@ class ProductAdmin(admin.ModelAdmin):
     form = ProductAdminForm
     inlines = [
         ProductRemainsInline,
-        ProductImageInline,
     ]
     search_fields = ('name', 'id')
     autocomplete_fields = ('categories',)
@@ -138,11 +132,6 @@ class ProductRemainsAdmin(admin.ModelAdmin):
 @admin.register(ProductVariant)
 class ProductVariantAdmin(admin.ModelAdmin):
     search_fields = ('name', 'id')
-
-
-@admin.register(ProductImage)
-class ProductImageAdmin(admin.ModelAdmin):
-    pass
 
 
 @admin.register(OrderProduct)
