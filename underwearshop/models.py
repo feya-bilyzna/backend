@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import MinValueValidator
 
 
 class Category(models.Model):
@@ -105,8 +106,9 @@ class ProductRemains(models.Model):
         default=1,
         verbose_name=_('Remains amount'),
     )
-    price = models.PositiveIntegerField(
+    price = models.FloatField(
         verbose_name=_('Price'),
+        validators=[MinValueValidator(0.01)],
     )
 
     def __str__(self):

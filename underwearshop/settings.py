@@ -59,6 +59,8 @@ INSTALLED_APPS = [
     'graphene_django',
     'graphene_graphiql_explorer',
     'corsheaders',
+    'constance',
+    'constance.backends.database',
 ]
 
 MIDDLEWARE = [
@@ -72,6 +74,15 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CONSTANCE_CONFIG = {
+    'PRICE_MULTIPLIER': (
+        39.,
+        'Every price is multiplied by this number in API and then rounded.'
+    ),
+}
+
+CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
 
 if DEBUG:
     INSTALLED_APPS.append('debug_toolbar')
