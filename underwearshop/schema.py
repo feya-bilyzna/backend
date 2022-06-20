@@ -16,6 +16,9 @@ from django.db.models import When, Case, Value, Sum, Min, Q
 
 from django.utils.translation import gettext_lazy as _
 
+from constance import config
+from math import ceil
+
 PRODUCT_PREFETCHES = (
     'remains',
     'remains__productvariant',
@@ -112,12 +115,12 @@ class ProductRemainsType(DjangoObjectType):
         fields = (
             "id",
             "remains",
-            "price",
         )
 
     variant_id = graphene.Int()
     variant_name = graphene.String()
     variant_style = GenericScalar()
+    price = graphene.Int()
 
     @staticmethod
     def resolve_variant_id(root, info, **kwargs):
@@ -130,6 +133,10 @@ class ProductRemainsType(DjangoObjectType):
     @staticmethod
     def resolve_variant_style(root, info, **kwargs):
         return root.productvariant.style
+
+    @staticmethod
+    def resolve_price(root, info, **kwargs):
+        return ceil(root.price * config.PRICE_MULTIPLIER)
 
 
 def slice_products(qs, page, order_by=()):
