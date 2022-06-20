@@ -34,7 +34,7 @@ def convert_json_to_images(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('underwearshop', '0016_product_image_links'),
+        ('underwearshop', '0018_product_image_links'),
     ]
 
     operations = [

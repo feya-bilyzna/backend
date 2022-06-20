@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('underwearshop', '0015_deleting_log_entries'),
+        ('underwearshop', '0017_convert_prices_to_dollar_us'),
     ]
 
     operations = [

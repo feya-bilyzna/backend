@@ -6,11 +6,9 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('underwearshop', '0017_switching_images_to_json'),
+        ('underwearshop', '0019_switching_images_to_json'),
     ]
 
     operations = [
-        migrations.DeleteModel(
-            name='ProductImage',
-        ),
+        migrations.DeleteModel(name='ProductImage', ),
     ]
