@@ -13,6 +13,7 @@ from django.utils.html import format_html
 from django import forms
 from django.urls import reverse
 from django.db.models import Sum, functions, F
+from modeltranslation.admin import TranslationAdmin
 
 
 class ProductAdminForm(forms.ModelForm):
@@ -100,7 +101,7 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 @admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(TranslationAdmin):
     form = ProductAdminForm
     inlines = [
         ProductRemainsInline,
@@ -130,7 +131,7 @@ class ProductRemainsAdmin(admin.ModelAdmin):
 
 
 @admin.register(ProductVariant)
-class ProductVariantAdmin(admin.ModelAdmin):
+class ProductVariantAdmin(TranslationAdmin):
     search_fields = ('name', 'id')
 
 

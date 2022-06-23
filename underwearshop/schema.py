@@ -41,6 +41,8 @@ class ProductType(DjangoObjectType):
             "name",
             "vendor_code",
             "description",
+            "description_uk",
+            "description_ru",
             "remains",
         )
 
@@ -119,6 +121,8 @@ class ProductRemainsType(DjangoObjectType):
 
     variant_id = graphene.Int()
     variant_name = graphene.String()
+    variant_name_uk = graphene.String()
+    variant_name_ru = graphene.String()
     variant_style = GenericScalar()
     price = graphene.Int()
 
@@ -129,6 +133,14 @@ class ProductRemainsType(DjangoObjectType):
     @staticmethod
     def resolve_variant_name(root, info, **kwargs):
         return root.productvariant.name
+
+    @staticmethod
+    def resolve_variant_name_uk(root, info, **kwargs):
+        return root.productvariant.name_uk
+
+    @staticmethod
+    def resolve_variant_name_ru(root, info, **kwargs):
+        return root.productvariant.name_ru
 
     @staticmethod
     def resolve_variant_style(root, info, **kwargs):
