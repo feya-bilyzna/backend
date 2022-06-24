@@ -6,7 +6,6 @@ from graphql import GraphQLError
 
 from underwearshop.models import (
     Product,
-    ProductImage,
     ProductRemains,
     Customer,
     Order,
@@ -21,7 +20,6 @@ from constance import config
 from math import ceil
 
 PRODUCT_PREFETCHES = (
-    'images',
     'remains',
     'remains__productvariant',
     'categories',
@@ -43,12 +41,14 @@ class ProductType(DjangoObjectType):
             "name",
             "vendor_code",
             "description",
-            "images",
+            "description_uk",
+            "description_ru",
             "remains",
         )
 
     brand_name = graphene.String()
     categories = graphene.List(graphene.String)
+    images = GenericScalar()
 
     @staticmethod
     def resolve_brand_name(root, info, **kwargs):
@@ -60,6 +60,10 @@ class ProductType(DjangoObjectType):
     @staticmethod
     def resolve_categories(root, info, **kwargs):
         return root.categories.all()
+
+    @staticmethod
+    def resolve_images(root, info, **kwargs):
+        return root.image_links
 
 
 class OrderProductType(DjangoObjectType):
@@ -105,18 +109,6 @@ class OrderType(DjangoObjectType):
         ).filter(order=root)
 
 
-class ProductImageType(DjangoObjectType):
-
-    class Meta:
-
-        model = ProductImage
-        fields = (
-            "id",
-            "product",
-            "url",
-        )
-
-
 class ProductRemainsType(DjangoObjectType):
 
     class Meta:
@@ -129,6 +121,8 @@ class ProductRemainsType(DjangoObjectType):
 
     variant_id = graphene.Int()
     variant_name = graphene.String()
+    variant_name_uk = graphene.String()
+    variant_name_ru = graphene.String()
     variant_style = GenericScalar()
     price = graphene.Int()
 
@@ -139,6 +133,14 @@ class ProductRemainsType(DjangoObjectType):
     @staticmethod
     def resolve_variant_name(root, info, **kwargs):
         return root.productvariant.name
+
+    @staticmethod
+    def resolve_variant_name_uk(root, info, **kwargs):
+        return root.productvariant.name_uk
+
+    @staticmethod
+    def resolve_variant_name_ru(root, info, **kwargs):
+        return root.productvariant.name_ru
 
     @staticmethod
     def resolve_variant_style(root, info, **kwargs):

@@ -4,7 +4,6 @@ from .models import (
     Product,
     ProductRemains,
     ProductVariant,
-    ProductImage,
     OrderProduct,
     Category,
     Customer,
@@ -14,6 +13,7 @@ from django.utils.html import format_html
 from django import forms
 from django.urls import reverse
 from django.db.models import Sum, functions, F
+from modeltranslation.admin import TranslationAdmin
 
 
 class ProductAdminForm(forms.ModelForm):
@@ -62,10 +62,6 @@ class ProductRemainsInline(admin.TabularInline):
     extra = 0
 
 
-class ProductImageInline(admin.StackedInline):
-    model = ProductImage
-
-
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     inlines = [
@@ -105,11 +101,10 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 @admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(TranslationAdmin):
     form = ProductAdminForm
     inlines = [
         ProductRemainsInline,
-        ProductImageInline,
     ]
     search_fields = ('name', 'id')
     autocomplete_fields = ('categories',)
@@ -136,13 +131,8 @@ class ProductRemainsAdmin(admin.ModelAdmin):
 
 
 @admin.register(ProductVariant)
-class ProductVariantAdmin(admin.ModelAdmin):
+class ProductVariantAdmin(TranslationAdmin):
     search_fields = ('name', 'id')
-
-
-@admin.register(ProductImage)
-class ProductImageAdmin(admin.ModelAdmin):
-    pass
 
 
 @admin.register(OrderProduct)

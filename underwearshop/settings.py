@@ -50,6 +50,7 @@ ALLOWED_HOSTS = [
 INSTALLED_APPS = [
     'underwearshop.apps.UnderwearShopConfig',
     'django_admin_logs',
+    'modeltranslation',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -152,6 +153,11 @@ LANGUAGE_CODE = 'ru-ru'
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
+
+LANGUAGES = (
+    ('ru', 'Russian'),
+    ('uk', 'Ukrainian'),
+)
 
 USE_L10N = True
 
